@@ -1,0 +1,170 @@
+<html xml:lang="de" lang="de-DE" dir="ltr" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml">
+	<head>
+		<script src="jquery.min.js"></script>
+		<script src="d3.v3.min.js"></script>
+		
+		<script src="colors.js"></script>
+		<script src="combinations.js"></script>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+
+		<title>Generation Kunst</title>
+		<meta property="og:image" content="http://generation-kunst.laspire.de/generation-kunst.png" />
+		<meta name="description" content="Im Allgemeinen herrscht die Meinung vor, dass bei der Kunst der Mensch und das menschliche Schaffen im Mittelpunkt steht. Durch die hier geschaffene Möglichkeit per Knopfdruck neue Kunstwerke einschließlich Betitelung und Beschreibung automatisiert generieren zu lassen wird dieser Ansatz in Frage gestellt und zur Diskussion freigegeben."/>
+		<meta name="keywords" content="laspire, Landshut, Generative Kunst"/>
+
+	</head>
+	<body onload="showText()">
+		<script>
+			var canvasWidth = 1920;
+			var canvasHeight = 1920;
+			function showText() {
+				$( ".info" ).css("opacity", "1");
+			}
+			var QueryString = function () {
+			  var query_string = {};
+			  var query = window.location.search.substring(1);
+			  var vars = query.split("&");
+			  for (var i=0;i<vars.length;i++) {
+				var pair = vars[i].split("=");
+				if (typeof query_string[pair[0]] === "undefined") {
+				  query_string[pair[0]] = decodeURIComponent(pair[1]);
+				} else if (typeof query_string[pair[0]] === "string") {
+				  var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+				  query_string[pair[0]] = arr;
+				} else {
+				  query_string[pair[0]].push(decodeURIComponent(pair[1]));
+				}
+			  } 
+			  return query_string;
+			}();
+			Array.prototype.extend = function (otherArray) {
+				otherArray.forEach(function(v) {this.push(v)}, this);	
+			}
+			function random() {
+				var x = Math.sin(seed++) * 10000;
+				return x - Math.floor(x);
+			}
+			function round(value) {
+				return Math.round(value);
+			}
+			function getTextElement(pool) {
+				var i = parseInt(random()*pool.length);
+				var element = pool[i];
+				pool.splice(i, 1);
+				return element;
+			}
+			function getColorTheme(combineCounter) {
+				var colorTheme = [];
+				for (var i = 0; i < combineCounter; ++i) {
+					colorTheme.extend(colors[parseInt((random()*Math.max(combineCounter, colors.length))) % colors.length])
+				}
+				return colorTheme;
+			}
+			function getColor(colorTheme) {
+				return colorTheme[parseInt(random()*colorTheme.length)];
+			}
+			var lineFunctionLinear = d3.svg.line()
+							 	.x(function(d) { return d.x; })
+								.y(function(d) { return d.y; })
+								.interpolate("linear");
+			var lineFunctionRounded = d3.svg.line()
+							 	.x(function(d) { return d.x; })
+								.y(function(d) { return d.y; })
+								.interpolate("cardinal-closed");
+			var svgContainer = d3.select("body").append("svg")
+								.attr("width", "100%")
+								.attr("height", "100%")
+								.attr("xmlns", "http://www.w3.org/2000/svg")
+								.attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+								.attr("xmlns:ev", "http://www.w3.org/2001/xml-events")
+								.attr("version", "1.1")
+								.attr("baseProfile", "full")
+								.attr("viewBox", "200 0 " + (canvasWidth-400) + " " + canvasHeight)
+								.attr("preserveAspectRatio", "xMidYMid slice");
+			var seed = parseInt(Math.random() * 2147483647);
+			var input = QueryString.text;
+			if (input !== undefined) {
+				var inputSeed = "";
+				for (var i = 0; i < input.length; ++i) {
+					inputSeed += input.charCodeAt(i);
+				}
+				seed = parseInt(inputSeed) % 2147483647;
+			}
+			input = QueryString.seed;
+			if (input !== undefined) {
+				seed = parseInt(input);
+			}
+			input = QueryString.colors;
+			if (input !== undefined) {
+				colors = [];
+				colors[0] = input.replace(/-/g, "-#").split("-");
+				colors[0].splice(0, 1);
+			}
+			var startSeed = seed;
+			var colorTheme = getColorTheme(1);
+			//var combination = combinations[10];
+			var combination = combinations[parseInt(random()*(combinations.length))];
+			var number = combination.number();
+			for (var j = 0; j < number; ++j) {
+				var xBase = 100+(random()*(canvasWidth-200));
+				var yBase = 100+(random()*(canvasHeight-200));
+				var lineData = [];
+				var corners = combination.corners();
+				for (var i = 0; i < corners; ++i) {
+					lineData[i] = {"x": round(combination.calcX(xBase)), "y": round(combination.calcY(yBase))};
+				}
+				var lineGraph = svgContainer.append("path")
+								.attr("d", combination.lineFunction()(lineData))
+								.attr("stroke", combination.strokeColor(colorTheme))
+								.attr("stroke-width", round(combination.strokeWidth()*100)/100)
+								.attr("fill", combination.color(colorTheme))
+								.attr("opacity", round(combination.opacity()*100)/100);
+			}
+		</script>
+
+		<div class="info"></div>
+
+		<script src="titles.js"></script>
+		<script src="words.js"></script>
+		<script>
+			var description = "<h1> " + getTitle() + "</h1>" + combination.info();
+			for (var i = 0; i < 3; ++i) {
+				description += getTextElement(s);
+			}
+			$('svg').append("<title>" + startSeed + "</title>");
+			//$('svg').append("<desc>" + description + "</desc>");
+			
+			var downloadableSvg = $('svg').clone();
+			downloadableSvg.attr("width", "100%")
+								.attr("height", "1920")
+								.attr("width", "1920")
+								.removeAttr("viewBox")
+								.removeAttr("preserveAspectRatio");
+
+			var mycanvas = document.createElement('canvas');
+			mycanvas.width = 1920;
+			mycanvas.height = 1080;
+			var ctx = mycanvas.getContext('2d');
+			var data = $('svg')[0].outerHTML;
+			var DOMURL = window.URL || window.webkitURL || window;
+			var img = new Image();
+			var svg = new Blob([data], {type: 'image/svg+xml'});
+			var url = DOMURL.createObjectURL(svg);
+			img.onload = function() {
+				ctx.beginPath();
+				ctx.rect(0, 0, 1920, 1080);
+				ctx.fillStyle = "white";
+				ctx.fill();
+				ctx.drawImage(img, 0, -400, 1920, 1920);
+				DOMURL.revokeObjectURL(url);
+  				var downloadablePng = mycanvas.toDataURL("image/jpeg", 0.99);
+
+				$(".info").html(
+					description
+				);
+			}
+			img.src = url;
+		</script>
+</html>
