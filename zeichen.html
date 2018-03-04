@@ -1,0 +1,80 @@
+<html xml:lang="de" lang="de-DE" dir="ltr" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml">
+	<head>
+		<script src="jquery.min.js"></script>
+		<script src="d3.v3.min.js"></script>
+
+		<script src="https://use.typekit.net/rrm4vec.js"></script>
+		<script>try{Typekit.load({ async: true });}catch(e){}</script>
+		
+		<script src="colors.js"></script>
+		<script src="combinations.js"></script>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+
+		<title>Generation Kunst</title>
+		<meta property="og:image" content="http://generation-kunst.laspire.de/generation-kunst.png" />
+		<meta name="description" content="Im Allgemeinen herrscht die Meinung vor, dass bei der Kunst der Mensch und das menschliche Schaffen im Mittelpunkt steht. Durch die hier geschaffene Möglichkeit per Knopfdruck neue Kunstwerke einschließlich Betitelung und Beschreibung automatisiert generieren zu lassen wird dieser Ansatz in Frage gestellt und zur Diskussion freigegeben."/>
+		<meta name="keywords" content="laspire, Landshut, Generative Kunst"/>
+
+		<style>
+			.buchstaben {
+				font-family: "acier-bat-solid", sans-serif;
+				font-style: normal;
+				font-weight: 400;
+				font-size: 100px;
+				color: black;
+
+				position: fixed;
+
+				text-align: justify;
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+		</style>
+
+	</head>
+	<body onload="showText()">
+		<div class="buchstaben">
+
+		</div>
+		<script>
+			function showText() {
+				$( ".info" ).css("opacity", "1");
+			}
+
+			function getBuchstabe() {
+			    var text = "";
+			    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ.";
+
+			    for (var i = 0; i < 5000; i++) {
+			    	text += possible.charAt(Math.floor(Math.random() * possible.length)) + " ";
+			    }
+			    return text;
+			}
+
+			function reloadText() {
+				$( ".info" ).css("opacity", "0");
+				var buchstaben = getBuchstabe();
+				$(".buchstaben").html(
+					buchstaben
+				);
+				setTimeout(function(){ $( ".info" ).css("opacity", "1"); }, 500);
+			}
+
+			reloadText();
+		</script>
+		<div class="info">
+			<h1>Zeichen</h1>
+			<p>
+In der Zufälligkeit ihrer Anordnung vollkommen bedeutungslos. Inhaltsleer.
+Die einzelnen Zeichen stehen für sich. Sind einsam. Setzen sich nicht fort.
+Die Abwensenheit jeglicher Semantik ist allgegenwärtig. Dem Betrachter stellt sich unweigerlich die Frage nach der Sinnhaftigkeit der kontextlosen Zeichen.
+			</p>
+			<p><a href="#" onclick="reloadText();">generieren</a></p>
+		</div>
+		<div class="content">
+			<h1>Generation Kunst</h1>
+			<a href="startseite.html">zurück</a>
+		</div>
+</html>

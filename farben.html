@@ -1,0 +1,95 @@
+<html xml:lang="de" lang="de-DE" dir="ltr" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml">
+	<head>
+		<script src="jquery.min.js"></script>
+		<script src="d3.v3.min.js"></script>
+
+		<script src="https://use.typekit.net/rrm4vec.js"></script>
+		<script>try{Typekit.load({ async: true });}catch(e){}</script>
+		
+		<script src="colors.js"></script>
+		<script src="combinations.js"></script>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+
+		<title>Generation Kunst</title>
+		<meta property="og:image" content="http://generation-kunst.laspire.de/generation-kunst.png" />
+		<meta name="description" content="Im Allgemeinen herrscht die Meinung vor, dass bei der Kunst der Mensch und das menschliche Schaffen im Mittelpunkt steht. Durch die hier geschaffene Möglichkeit per Knopfdruck neue Kunstwerke einschließlich Betitelung und Beschreibung automatisiert generieren zu lassen wird dieser Ansatz in Frage gestellt und zur Diskussion freigegeben."/>
+		<meta name="keywords" content="laspire, Landshut, Generative Kunst"/>
+
+	</head>
+	<body onload="showText()">
+		<script>
+			function showText() {
+				$( ".info" ).css("opacity", "1");
+			}
+			function getColor(pool) {
+				var i = parseInt(Math.random()*pool.length);
+				var element = pool[i];
+				pool.splice(i, 1);
+				return element;
+			}
+
+			var lineFunctionLinear = d3.svg.line()
+							 	.x(function(d) { return d.x; })
+								.y(function(d) { return d.y; })
+								.interpolate("linear");
+			var lineFunctionRounded = d3.svg.line()
+							 	.x(function(d) { return d.x; })
+								.y(function(d) { return d.y; })
+								.interpolate("cardinal-closed");
+			var svgContainer = d3.select("body").append("svg")
+								.attr("width", "100%")
+								.attr("height", "100%")
+								.attr("xmlns", "http://www.w3.org/2000/svg")
+								.attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+								.attr("xmlns:ev", "http://www.w3.org/2001/xml-events")
+								.attr("version", "1.1")
+								.attr("baseProfile", "full");
+			var anzahl = 0;
+			var x = 0;
+			var y = 0;
+			var width = 125;
+			var height = 125;
+
+			var finalColors = [];
+
+			for (var i = 0; i < colors.length; ++i) {
+				for (var j = 0; j < colors[i].length; ++j) {
+					finalColors.push(colors[i][j]);
+				}
+			}
+
+			var colorSize = finalColors.length;
+			for (var i = 0; i < colorSize; ++i) {
+					var lineData = [];
+					lineData[0] = {"x": x + 0, "y": y + 0};
+					lineData[1] = {"x": x + 0, "y": y + height};
+					lineData[2] = {"x": x + width, "y": y + height};
+					lineData[3] = {"x": x + width, "y": y + 0};
+					var lineGraph = svgContainer.append("path")
+									.attr("d", lineFunctionLinear(lineData))
+									.attr("fill", getColor(finalColors))
+									.attr("opacity", 1);
+					++anzahl;
+					x += width;
+					if (x >= 5000) {
+						x = 0;
+						y += height;
+					}
+			}
+		</script>
+		<div class="info">
+			<h1>Farben</h1>
+			<p>
+Langeweile. Eine profan eintönige Anordung farbiger Quadrate.
+Die Abwesenheit menschlichen Schaffens durchdrängt die Gedanken des Betrachters und führt zu Mangel an Kunst.
+Farben alleine sind ein notwendiges, aber nicht hinreichendes Grundelement gestalterischen Schaffens.
+			</p>
+			<p><a href="#" onclick="location.reload();">generieren</a></p>
+		</div>
+		<div class="content">
+			<h1>Generation Kunst</h1>
+			<a href="startseite.html">zurück</a>
+		</div>
+</html>

@@ -1,0 +1,127 @@
+body {
+	font-family: "futura-pt", sans-serif;
+	font-size: 16px;
+	margin: 0;
+	padding: 0;
+}
+a {
+	color: white;
+	background-color: black;
+	text-decoration: none;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-style: solid;
+	border-width: 1px;
+}
+a:hover {
+	color: black;
+	background-color: white;
+	text-decoration: none;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.info {
+	position: absolute;
+	width: 400px;
+	right: 100px;
+	height: auto;
+	bottom: 100px;
+	background-color: white;
+	padding: 50px;
+	opacity: 0;
+	text-align: justify;
+
+	transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: ease-in;
+	transition-delay: 0s;
+}
+
+svg, .info, .infoLarge {
+	position: fixed;
+}
+
+svg {
+	height: 100vh;
+}
+
+.content {
+	position: absolute;
+	width: calc(100% - 200px);
+	top: 100vh;
+	background-color: white;
+	padding: 100px;
+}
+
+.title {
+
+	position: fixed;
+	width: 100%;
+	top: 30%;
+	height: auto;
+	opacity: 0;
+	text-align: center;
+
+	font-family: "acier-bat-outline", sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 100px;
+	color: white;
+
+	transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: ease-in;
+	transition-delay: 0s;
+}
+.title a {
+	font-family: "futura-pt", sans-serif;
+	font-size: 16px;
+
+	background-color: transparent;
+	color: white;
+
+	border-style: none;
+	margin: 1px;
+}
+.title a:hover {
+	border-style: solid;
+	border-width: 1px;
+	margin: 0px;
+}
+
+.backtitle {
+	z-index: -1;
+	position: fixed;
+	width: 100%;
+	top: 30%;
+	height: auto;
+	opacity: 1;
+	text-align: center;
+
+	font-family: "acier-bat-solid", sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 100px;
+	color: black;
+
+	transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: ease-in;
+	transition-delay: 0s;
+}
+.backtitle a {
+	font-family: "futura-pt", sans-serif;
+	font-size: 16px;
+
+	background-color: black;
+	color: transparent;
+
+	margin: 1px;
+}
+h1 {
+	font-family: "acier-bat-solid", sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	text-align: left;
+}
