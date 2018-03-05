@@ -1,6 +1,12 @@
+@font-face {
+    font-family: huss;
+    src: url(HussBoldWeb.woff);
+}
+
 body {
-	font-family: "futura-pt", sans-serif;
-	font-size: 16px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	line-height: 30px;
 	margin: 0;
 	padding: 0;
 }
@@ -23,7 +29,7 @@ a:hover {
 
 .info {
 	position: absolute;
-	width: 400px;
+	width: 500px;
 	right: 100px;
 	height: auto;
 	bottom: 100px;
@@ -63,9 +69,8 @@ svg {
 	opacity: 0;
 	text-align: center;
 
-	font-family: "acier-bat-outline", sans-serif;
-	font-style: normal;
-	font-weight: 400;
+	font-family: "huss";
+	text-transform: uppercase;
 	font-size: 100px;
 	color: white;
 
@@ -75,7 +80,7 @@ svg {
 	transition-delay: 0s;
 }
 .title a {
-	font-family: "futura-pt", sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 16px;
 
 	background-color: transparent;
@@ -99,9 +104,8 @@ svg {
 	opacity: 1;
 	text-align: center;
 
-	font-family: "acier-bat-solid", sans-serif;
-	font-style: normal;
-	font-weight: 400;
+	font-family: "huss", sans-serif;
+	text-transform: uppercase;
 	font-size: 100px;
 	color: black;
 
@@ -111,7 +115,7 @@ svg {
 	transition-delay: 0s;
 }
 .backtitle a {
-	font-family: "futura-pt", sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 16px;
 
 	background-color: black;
@@ -120,8 +124,8 @@ svg {
 	margin: 1px;
 }
 h1 {
-	font-family: "acier-bat-solid", sans-serif;
-	font-style: normal;
-	font-weight: 400;
+	font-family: "huss", sans-serif;
+	text-transform: uppercase;
 	text-align: left;
+	line-height: 40px;
 }
