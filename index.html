@@ -15,8 +15,18 @@
 		<meta name="keywords" content="laspire, Landshut, Generative Kunst"/>
 
 	</head>
-	<body onload="showText()" onkeypress="location.reload();" autofocus>
+	<body onload="showText()" onkeydown="reload();" autofocus>
 		<script>
+			var clickTimeout = 5000;
+			var clickAllowed = false;
+			setTimeout(function(){ clickAllowed = true; }, clickTimeout);
+			function reload(){
+				if (clickAllowed) {
+					location.reload();
+				}
+			}
+		
+		
 			var canvasWidth = 1920;
 			var canvasHeight = 1920;
 			function showText() {
