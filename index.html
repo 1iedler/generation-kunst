@@ -7,7 +7,7 @@
 		<script src="combinations.js"></script>
 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="style.css" type="text/css" />
 
 		<title>Generation Kunst</title>
 		<meta property="og:image" content="http://generation-kunst.laspire.de/generation-kunst.png" />
@@ -15,12 +15,19 @@
 		<meta name="keywords" content="laspire, Landshut, Generative Kunst"/>
 
 	</head>
-	<body onload="showText()" onkeydown="reload();" autofocus>
+	<body onload="showText()" onkeydown="reload(event);" autofocus>
 		<script>
 			var clickTimeout = 5000;
+			var printKeyCode = 13;
+			
 			var clickAllowed = false;
 			setTimeout(function(){ clickAllowed = true; }, clickTimeout);
-			function reload(){
+			function reload(event){
+				if (event.keyCode == printKeyCode) {
+					window.print();
+					clickAllowed = false;
+					setTimeout(function(){ clickAllowed = true; }, clickTimeout);
+				}
 				if (clickAllowed) {
 					location.reload();
 				}
